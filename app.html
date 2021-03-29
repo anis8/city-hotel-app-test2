@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City</title>
+    <link rel="stylesheet" type="text/css" href="assets/styles/app.css">
+    <link rel="stylesheet" type="text/css" href="assets/styles/updater.css">
+    <link rel="stylesheet" type="text/css" href="assets/styles/buttons.css">
+    <link rel="stylesheet" type="text/css" href="assets/styles/alert.css">
+</head>
+<body>
+<div id="alert" class="alert">
+    <div class="box">
+        <div id="title" class="title">Attention...</div>
+        <div id="description" class="description">Tu souhaites vider ton cache et relancer l'application.</div>
+        <input id="input" placeholder="Mon text"/>
+        <div class="btns">
+            <div id="cancel" class="button" style="float:left;background: #ed1c24;">
+                <div class="alpha"></div>
+                Annuler
+            </div>
+            <div id="confirm" class="button">
+                <div class="alpha"></div>
+                Confirmer
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updater" class="updater">
+    <div class="body">
+        <div class="connection">
+            connexion en cours
+        </div>
+        <div id="progression" class="progression">
+            ...
+        </div>
+        <div class="duck"></div>
+        <div class="loader"></div>
+    </div>
+    <div class="logo"></div>
+    <div id="version" class="version">...</div>
+</div>
+<iframe id="frame" width="100%" src="https://www.habbocity.me/profil"></iframe>
+<div class="buttons">
+    <div id="close">
+        <div id="close-button" style="transform: scaleX(-1);"></div>
+    </div>
+    <!--
+    <div id="screen" class="button">
+        <div class="icon screen"></div>
+        <div class="tooltip">
+            <div class="arrow"></div>
+            Plein écran
+        </div>
+    </div>
+    -->
+    <div id="cache" class="button">
+        <div class="icon cache"></div>
+        <div class="tooltip">
+            <div class="arrow"></div>
+            Vider le cache
+        </div>
+    </div>
+    <div id="zoomOut" class="button">
+        <div class="icon out"></div>
+        <div class="tooltip">
+            <div class="arrow"></div>
+            Zoom -1%
+        </div>
+    </div>
+    <div id="zoomIn" class="button">
+        <div class="icon in"></div>
+        <div class="tooltip">
+            <div class="arrow"></div>
+            Zoom +1%
+        </div>
+    </div>
+    <div id="reload" class="button">
+        <div class="icon reload"></div>
+        <div class="tooltip">
+            Recharger
+        </div>
+    </div>
+</div>
+<div id="messages"></div>
+<script>
+    let ipcRenderer = window.ipcRenderer;
+    let updater = document.getElementById("updater");
+    let progression = document.getElementById("progression");
+    let version = document.getElementById("version");
+
+    ipcRenderer.on("version", (event, data) => {
+        version.innerHTML = data;
+    });
+    ipcRenderer.on("checking-for-update", (event, data) => {
+        progression.innerHTML = "mise à jour...";
+        updater.style.display = "block";
+    });
+    ipcRenderer.on("update-not-available", (event, data) => {
+        updater.style.display = "none";
+        updater.innerHTML = "";
+    });
+    ipcRenderer.on("download-progress", (event, data) => {
+        progression.innerHTML = Math.round(data['percent']) + "%";
+    });
+
+
+    let isOpenButtons = true;
+    let zoomIn = document.getElementById("zoomIn");
+    let zoomOut = document.getElementById("zoomOut");
+    let iframe = document.getElementById("frame").contentWindow;
+    let reload = document.getElementById("reload");
+    let close = document.getElementById("close");
+    let cache = document.getElementById("cache");
+    let alert = document.getElementById("alert");
+    let cancel = document.getElementById("cancel");
+    let confirm = document.getElementById("confirm");
+    let form = document.getElementById('form');
+    let input = document.getElementById('input');
+
+    let fullScreenFunction = () => {
+        if (iframe.location.href === 'https://www.habbocity.me/hotel' && iframe.document.getElementById('hotel1')) {
+            iframe.document.getElementById('hotel1').addEventListener('click', () => {
+                ipcRenderer.send("fullscreen", "");
+            });
+            clearInterval(fullScreenInterval);
+        }
+    };
+    let fullScreenInterval = setInterval(fullScreenFunction, 1000);
+
+    let openAlert = (t, d, i, ipc) => {
+        let title = document.getElementById("title");
+        let description = document.getElementById("description");
+
+        alert.style.visibility = "visible";
+        title.innerText = t;
+        description.innerText = d;
+
+        if (i) {
+            input.style.visibility = "visible";
+        } else {
+            input.style.visibility = "hidden";
+        }
+
+        if (ipc) {
+            confirm.setAttribute('onClick', 'ipcRenderer.send("' + ipc + '", "");\n');
+        }
+    }
+    let closeAlert = () => {
+        alert.style.visibility = "hidden";
+        input.style.visibility = "hidden";
+        input.value = '';
+    }
+
+    zoomIn.addEventListener('click', () => {
+        ipcRenderer.send("zoomIn", "");
+    });
+    zoomOut.addEventListener('click', () => {
+        ipcRenderer.send("zoomOut", "");
+    });
+    reload.addEventListener('click', () => {
+        iframe.location.reload();
+        fullScreenInterval = setInterval(fullScreenFunction, 1000);
+    });
+    close.addEventListener('click', () => {
+        if (!isOpenButtons) {
+            isOpenButtons = true;
+            document.querySelector('.buttons').style.width = "50px";
+            document.getElementById('close-button').style.transform = "scaleX(-1)";
+        } else {
+            isOpenButtons = false;
+            document.querySelector('.buttons').style.width = "0px";
+            document.getElementById('close-button').style.transform = "none";
+        }
+    });
+    cache.addEventListener('click', () => {
+        openAlert("Attention...", "Tu souhaites vider ton cache et relancer l'application.", false, "clearcache");
+    });
+    cancel.addEventListener('click', () => {
+        closeAlert();
+    });
+    confirm.addEventListener('click', () => {
+        closeAlert();
+    })
+
+    let lastHref = "";
+    setInterval(() => {
+        if (typeof iframe.saveUniqueId !== "undefined") {
+            if (lastHref !== iframe.window.location.href) {
+                iframe.saveUniqueId(window.uniqueId);
+                lastHref = iframe.window.location.href;
+            }
+        }
+    }, 3000);
+</script>
+</body>
+</html>

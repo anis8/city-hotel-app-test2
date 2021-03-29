@@ -1,0 +1,106 @@
+{
+  "name": "city",
+  "version": "1.0.7",
+  "productName": "HabboCity",
+  "main": "app.js",
+  "description": "City: Créez votre avatar, décorez votre appartement ! Tchattez avec vos amis.",
+  "homepage": "https://habbocity.me",
+  "author": {
+    "name": "City Games",
+    "email": "contact@habbocity.me"
+  },
+  "scripts": {
+    "start": "electron .",
+    "publish": "electron-builder --win -p always",
+    "build": "electron-builder --win"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "electron": "11.1.0",
+    "electron-builder": "22.9.1",
+    "electron-notarize": "^1.0.0"
+  },
+  "dependencies": {
+    "electron-updater": "4.3.5",
+    "node-machine-id": "^1.1.12"
+  },
+  "build": {
+    "appId": "me.habbocity.CityApp",
+    "files": "!build/SignHook.js",
+    "extraResources": [
+      "./flash/**"
+    ],
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "anis8",
+        "repo": "city-hotel-app-test"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "uninstallDisplayName": "City",
+      "oneClick": true,
+      "perMachine": false,
+      "artifactName": "City-${version}.${ext}"
+    },
+    "afterSign": "build/SignHook.js",
+    "mac": {
+      "icon": "icon.png",
+      "category": "public.games.social-networking",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements-mac.plist",
+      "entitlementsInherit": "build/entitlements-mac.plist",
+      "target": [
+        "dmg"
+      ]
+    },
+    "dmg": {
+      "iconSize": 160,
+      "contents": [
+        {
+          "x": 180,
+          "y": 170
+        },
+        {
+          "x": 480,
+          "y": 170,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "deb",
+          "arch": [
+            "x64",
+            "ia32",
+            "armv7l",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "Network;Chat"
+    }
+  }
+}

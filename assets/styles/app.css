@@ -1,0 +1,20 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Ubuntu", serif;
+}
+
+@font-face {
+    font-family: "Ubuntu";
+    src: url("../fonts/power.woff2") format("woff2");
+}
+
+iframe {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+}

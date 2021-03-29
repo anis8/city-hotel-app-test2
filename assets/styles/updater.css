@@ -1,0 +1,91 @@
+.updater {
+    position: fixed;
+    height: 100%;
+    display: block;
+    width: 100%;
+    z-index: 999999;
+    background: linear-gradient(rgb(75, 34, 174), rgb(149, 105, 243));
+}
+
+.updater .logo {
+    background: url('../images/logo.png');
+    opacity: 0.8;
+    width: 477px;
+    height: 58px;
+    bottom: 30px;
+    position: absolute;
+    left: calc(50% - 238px);
+}
+
+.updater .version {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: 105px;
+    color: white;
+}
+
+.updater .body {
+    position: relative;
+    margin: auto;
+    width: 400px;
+    height: 310px;
+    top: calc(50% - 220px);
+}
+
+.updater .body .connection {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+}
+
+.updater .body .progression {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+}
+
+.updater .body .duck {
+    background: url('../images/duck.png');
+    opacity: 0.8;
+    width: 280px;
+    height: 230px;
+    margin: auto;
+}
+
+
+.updater .body .loader,
+.updater .body .loader:after {
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+}
+
+.updater .body .loader {
+    height: 36px;
+    width: 36px;
+    margin: 10px auto;
+    font-size: 10px;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-left: 1.1em solid #ffffff;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation: load8 1.1s infinite linear;
+    animation: load8 1.1s infinite linear;
+}
+
+@keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}

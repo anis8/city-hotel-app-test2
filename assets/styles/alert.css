@@ -1,0 +1,75 @@
+.alert {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert .box {
+    height: 280px;
+    position: relative;
+    background: white;
+    padding: 15px;
+    width: 410px;
+    border-radius: 15px;
+}
+
+.alert .box .title {
+    font-size: 40px;
+}
+
+.alert .box .description {
+    font-size: 20px;
+}
+
+.alert .box input {
+    border: 2px solid #dedede;
+    height: 28px;
+    padding: 10px 20px;
+    width: calc(100% - 40px);
+    border-radius: 15px;
+    font-size: 18px;
+    margin-top: 15px;
+    font-family: 'Ubuntu';
+}
+
+.alert .box .btns {
+    position: absolute;
+    width: calc(100% - 30px);
+    bottom: 15px
+}
+
+.alert .box .btns .button {
+    cursor: pointer;
+    float: right;
+    position: relative;
+    display: flex;
+    color: white;
+    font-size: 25px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #4c4c4c;
+    border-radius: 18px;
+    height: 56px;
+    width: calc(50% - 10px);
+    background: #32bf1a;
+}
+
+.alert .box .btns .button:hover {
+    opacity: 0.8;
+}
+
+.alert .box .btns .button .alpha {
+    position: absolute;
+    left: 8px;
+    top: 5px;
+    height: 8px;
+    border-radius: 5px;
+    width: calc(100% - 16px);
+    background: #ffffff69;
+}
