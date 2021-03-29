@@ -1,6 +1,6 @@
 {
   "name": "city",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "productName": "HabboCity",
   "main": "app.js",
   "description": "City: Créez votre avatar, décorez votre appartement ! Tchattez avec vos amis.",
@@ -38,7 +38,7 @@
       {
         "provider": "github",
         "owner": "anis8",
-        "repo": "city-hotel-app-test"
+        "repo": "city-hotel-app-test2"
       }
     ],
     "win": {
